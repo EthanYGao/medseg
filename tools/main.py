@@ -93,8 +93,8 @@ cfg.PID = os.getpid()
 # cfg.EXP_DIR = 'unet/unet_2d_bn_c2'
 # snapshot_prefix = 'unet_2d_bn_c2_liver'
 # 3
-cfg.EXP_DIR = 'uvnet/uvnet_2d_bn_incept2_weigted_c2'
-snapshot_prefix = 'uvnet_2d_bn_incept2_liver_c2_refined_refined'
+# cfg.EXP_DIR = 'uvnet/uvnet_2d_bn_incept2_weigted_c2'
+# snapshot_prefix = 'uvnet_2d_bn_incept2_liver_c2_refined_refined'
 # 4
 # cfg.EXP_DIR = 'uvnet/uvnet_2d_bn_incept2_weigted_c2'
 # snapshot_prefix = 'uvnet_2d_bn_incept2_liver_c2_416full'
@@ -125,8 +125,8 @@ snapshot_prefix = 'uvnet_2d_bn_incept2_liver_c2_refined_refined'
 # cfg.EXP_DIR = 'uvnet/uvnet_2d_bn_incept_weigted_c3'
 # snapshot_prefix = 'uvnet_2d_bn_incept_weigted_c3_1.1.10'
 # 8
-# cfg.EXP_DIR = 'uvnet/uvnet_2d_bn_incept2_weigted_c3'
-# snapshot_prefix = 'uvnet_2d_bn_incept2_weigted_c3_1.1.10_refined'
+cfg.EXP_DIR = 'uvnet/uvnet_2d_bn_incept2_weigted_c3'
+snapshot_prefix = 'uvnet_2d_bn_incept2_weigted_c3_1.1.10_refined'
 ###### ###### ###### ###### ###### ######
 ''' 
 Train
@@ -153,7 +153,7 @@ cfg.TRAIN.TRIM.MINSIZE = [64,64,5]
 cfg.TRAIN.TRIM.PAD = [32, 32, 0]
 
 cfg.TRAIN.CLASS = edict()
-cfg.TRAIN.CLASS.USE_WEIGHT = True
+cfg.TRAIN.CLASS.USE_WEIGHT = False
 cfg.TRAIN.CLASS.WEIGHT = [1, 1, 10]
 cfg.TRAIN.CLASS.NUMBER = 3
 cfg.TRAIN.CLASS.SPLIT = (0.5, 1.5)

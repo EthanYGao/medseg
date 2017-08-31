@@ -26,11 +26,11 @@ def largest_connected_component_mask(image):
 	# image_filtered = closeFilter.Execute(image_filtered)
 
 	# Connect nearby volumes by image dilation
-	dilateFilter = sitk.BinaryDilateImageFilter()
-	dilateFilter.SetForegroundValue(1)
-	dilateFilter.SetKernelRadius(1)
-	dilateFilter.SetKernelType(1)
-	image_filtered = dilateFilter.Execute(image_filtered)
+	# dilateFilter = sitk.BinaryDilateImageFilter()
+	# dilateFilter.SetForegroundValue(1)
+	# dilateFilter.SetKernelRadius(1)
+	# dilateFilter.SetKernelType(1)
+	# image_filtered = dilateFilter.Execute(image_filtered)
 
 	# Get connected label
 	ccFilter = sitk.ConnectedComponentImageFilter()
@@ -124,13 +124,13 @@ if __name__ == "__main__":
 	# infolder = os.path.join(root_folder, 'uvnet_2d_bn_incept2_weigted_c3_1.1.10_refined_iter_100000/uvnet_weigted_250000_LCC_MG_LCC_incept2_liver_120000_label_LCC_lesion_label_LCC_MG_LCC_MC')
 	# outfolder = os.path.join(root_folder, 'uvnet_2d_bn_incept2_weigted_c3_1.1.10_refined_iter_100000/uvnet_weigted_250000_LCC_MG_LCC_incept2_liver_120000_label_LCC_lesion_label_LCC_MG_LCC_MC_LCC')
 
-	root_folder = '/home/zlp/dev/medseg/output/uvnet/uvnet_2d_bn_incept2_weigted_c3/lits_Test_Batch_trainval_3D'
-	infolder = os.path.join(root_folder, 'lesions_12_14_15_16_MC_MG_MG')
-	outfolder = os.path.join(root_folder, 'lesions_12_14_15_16_MC_MG_MG_LCC')
-
 	# root_folder = '/home/zlp/dev/medseg/output/uvnet/uvnet_2d_bn_incept2_weigted_c3/lits_Test_Batch_trainval_3D'
-	# infolder = os.path.join(root_folder, 'uvnet_2d_bn_incept2_weigted_c3_1.1.10_refined_iter_120000/liver5_lesion_best_MC')
-	# outfolder = os.path.join(root_folder, 'uvnet_2d_bn_incept2_weigted_c3_1.1.10_refined_iter_120000/liver5_lesion_best_MC_LCC')
+	# infolder = os.path.join(root_folder, 'lesions_12_14_15_16_MC_MG_MG')
+	# outfolder = os.path.join(root_folder, 'lesions_12_14_15_16_MC_MG_MG_LCC')
+
+	root_folder = '/home/zlp/dev/medseg/output/uvnet/uvnet_2d_bn_incept2_weigted_c3/lits_Test_Batch_trainval_3D'
+	infolder = os.path.join(root_folder, 'uvnet_2d_bn_incept2_weigted_c3_1.1.10_refined_iter_120000/liver5_lesion_best_MC_LCC')
+	outfolder = os.path.join(root_folder, 'uvnet_2d_bn_incept2_weigted_c3_1.1.10_refined_iter_120000/liver5_lesion_best_MC_LCC_LCC')
 
 	# root_folder = '/home/zlp/dev/medseg/output/uvnet/uvnet_2d_bn_incept2_weigted_c3/lits_Test_Batch_trainval_3D'
 	# infolder = os.path.join(root_folder, 'uvnet_2d_bn_incept2_weigted_c3_1.1.10_refined_iter_120000/incept2_liver_refined_120000_label_LCC_lesion_label_LCC_MG_LCC_MG')

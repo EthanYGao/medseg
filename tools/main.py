@@ -125,8 +125,12 @@ cfg.PID = os.getpid()
 # cfg.EXP_DIR = 'uvnet/uvnet_2d_bn_incept_weigted_c3'
 # snapshot_prefix = 'uvnet_2d_bn_incept_weigted_c3_1.1.10'
 # 8
-cfg.EXP_DIR = 'uvnet/uvnet_2d_bn_incept2_weigted_c3'
-snapshot_prefix = 'uvnet_2d_bn_incept2_weigted_c3_1.1.10_refined'
+# cfg.EXP_DIR = 'uvnet/uvnet_2d_bn_incept2_weigted_c3'
+# snapshot_prefix = 'uvnet_2d_bn_incept2_weigted_c3_1.1.10_refined'
+
+'''roi'''
+cfg.EXP_DIR = 'uvnet/uvnet_2d_bn_roi_c3'
+snapshot_prefix = 'uvnet_2d_bn_roi_c3'
 ###### ###### ###### ###### ###### ######
 ''' 
 Train
@@ -149,8 +153,10 @@ cfg.TRAIN.BG.CLEAN = False
 cfg.TRAIN.BG.BRIGHT = False
 
 cfg.TRAIN.TRIM = edict()
-cfg.TRAIN.TRIM.MINSIZE = [64,64,5]
-cfg.TRAIN.TRIM.PAD = [32, 32, 0]
+# cfg.TRAIN.TRIM.MINSIZE = [64,64,5]
+# cfg.TRAIN.TRIM.PAD = [32, 32, 0]
+cfg.TRAIN.TRIM.MINSIZE = [512,512,5]
+cfg.TRAIN.TRIM.PAD = [0, 0, 0]
 
 cfg.TRAIN.CLASS = edict()
 cfg.TRAIN.CLASS.USE_WEIGHT = False
@@ -165,7 +171,7 @@ cfg.TRAIN.BATCH_SIZE = 2
 cfg.TRAIN.SNAPSHOT_ITERS = 10000
 cfg.TRAIN.MAX_ITER = 180000
 cfg.TRAIN.USE_PREFETCH = False
-cfg.TRAIN.DISPLAY_INTERVAL = 1000
+cfg.TRAIN.DISPLAY_INTERVAL = 100
 cfg.TRAIN.SOLVER = None
 cfg.TRAIN.PROTOTXT = osp.abspath(osp.join(cfg.MODELS_DIR, cfg.EXP_DIR, '{}'.format('train.prototxt')))
 cfg.TRAIN.PRETRAINED_MODEL = '{}'.format('/home/zlp/dev/medseg/output/uvnet/uvnet_2d_bn_incept2_weigted_c3/lits_Training_Batch_trainval_2D/uvnet_2d_bn_incept2_weigted_c3_1.1.10_iter_260000.caffemodel')
@@ -176,7 +182,7 @@ cfg.TRAIN.NUM_PROCESS = 6 #the number of threads to do data augmentation
 '''
 SOLVER_PARAMETER = edict()
 SOLVER_PARAMETER.NET = cfg.TRAIN.PROTOTXT
-SOLVER_PARAMETER.BASE_LR = 0.0001
+SOLVER_PARAMETER.BASE_LR = 0.001
 SOLVER_PARAMETER.MOMENTUM = 0.99
 SOLVER_PARAMETER.WEIGHT_DECAY = 0.0005
 SOLVER_PARAMETER.LR_POLICY = "step"
@@ -229,7 +235,7 @@ cfg.EVAL.NUM_PROCESS = 12 #the number of threads to do data augmentation
 
 if __name__ == '__main__':
 	
-	# sys.argv.extend(['train', '--gpu=0'])
+	# sys.argv.extend(['train', '--gpu=1'])
 	# sys.argv.extend(['test', '--gpu=1'])
 	# sys.argv.extend(['eval', '--gpu=0'])
 	args = parse_args()

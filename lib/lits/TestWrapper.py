@@ -125,7 +125,6 @@ class InferenceWrapper(object):
         self.net.blobs['data'].data[...] = input_data
         # do forward
         blobs_out = self.net.forward()
-        blobs_out = self.net.forward()
         prob = blobs_out['prob'][0]
         return prob
 
@@ -171,11 +170,24 @@ class InferenceWrapper(object):
         # set regions that outside mask to have background prob 1.0
         pred_map[0] = 1.0
         if not self.params.APPLY_MASK:
+            ### Scale input_patch to fix target_size
             if not self.params.ADJACENT:
+                im = scale_image(im, target_size=self.params.SCALES[0], max_size=self.params.MAX_SIZE, im_type='2D')
                 # convert one channel image to 3 channel
                 im = np.repeat(im, 3, axis=2)
+            else:
+                im_scaled = np.zeros((self.params.SCALES[0], self.params.SCALES[0], im.shape[2]), dtype=np.float32)
+                for ind in xrange(im.shape[2]):
+                    im_scaled[:,:,ind] = scale_image(im[:,:,ind], target_size=self.params.SCALES[0], max_size=self.params.MAX_SIZE, im_type='2D') 
+                im = im_scaled
+
             outprob = self.do_forward_2d(im)
-            pred_map[:,:,:] = outprob
+            ### Scale prob back to input_patch size
+            outprob_back = np.zeros((outprob.shape[0], pred_map.shape[1], pred_map.shape[2]), dtype=np.float32)
+            for ind_class in xrange(outprob.shape[0]):
+                outprob_back[ind_class, :, :] = scale_image(outprob[ind_class, :, :], target_size=pred_map.shape[1], max_size=self.params.MAX_SIZE, im_type='2D')
+            
+            pred_map[:,:,:] = outprob_back
         else:
             ### Clean the bg of im
             if self.params.BG.CLEAN:

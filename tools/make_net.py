@@ -20,14 +20,14 @@ __nets = ['deeplab_largefov', 'deeplab_largefov_bn', 'deeplab_v2_vgg_16', 'deepl
 		'densenet_unet', 'densenet_unet_8s',
 		'uvnet_2d_bn', 'uvnet_2d_bn_weigted', 'uvnet_2d_bn_original_weigted',
 		'uvnet_2d_bn_modified_weigted', 'uvnet_2d_bn_incept_weigted', 'uvnet_2d_bn_incept2_weigted',
-		'uvnet_2d_bn_roi']
+		'uvnet_2d_bn_roi_u2', 'uvnet_2d_bn_roi_u3']
 ### setting ###
 # dim_data = [5,1,156,156,8]
 # dim_label = [5,1,156,156,8]
 dim_data = [2,5,416,416]
 dim_label = [2,1,416,416]
 num_class = 3
-net = 'uvnet_2d_bn_roi'
+net = 'uvnet_2d_bn_roi_u3'
 
 backbone = net.split('_')[0]
 assert backbone in __backbones, 'Unknown backbone: {}'.format(backbone)
@@ -60,5 +60,5 @@ if net in ['densenet_unet', 'densenet_unet_8s']:
 
 if net in ['uvnet_2d_bn', 'uvnet_2d_bn_weigted','uvnet_2d_bn_original_weigted',
 'uvnet_2d_bn_modified_weigted', 'uvnet_2d_bn_incept_weigted', 'uvnet_2d_bn_incept2_weigted',
-'uvnet_2d_bn_roi']:
+'uvnet_2d_bn_roi_u2', 'uvnet_2d_bn_roi_u3']:
 	make_uvnet(net, dim_data, dim_label, num_class, prototxt_train, prototxt_test)

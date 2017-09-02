@@ -126,6 +126,11 @@ class InferenceWrapper(object):
         # do forward
         blobs_out = self.net.forward()
         prob = blobs_out['prob'][0]
+        mask = blobs_out['roi_mask'][0]
+        if self.params.DEBUG:
+            fig, axes = plt.subplots(1, 3)
+            vis_seg(axes, [image[:,:,image.shape[2]/2], np.argmax(prob, axis=0), mask[0,:,:]])
+            exit()
         return prob
 
     def do_forward_3d(self, image, chunk_shape=None, stride=None):

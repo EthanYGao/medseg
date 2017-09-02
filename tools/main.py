@@ -129,10 +129,10 @@ cfg.PID = os.getpid()
 # snapshot_prefix = 'uvnet_2d_bn_incept2_weigted_c3_1.1.10_refined'
 
 '''roi'''
-cfg.EXP_DIR = 'uvnet/uvnet_2d_bn_roi_u2_c3'
-snapshot_prefix = 'uvnet_2d_bn_roi_u2_c3'
-# cfg.EXP_DIR = 'uvnet/uvnet_2d_bn_roi_u3_c3'
-# snapshot_prefix = 'uvnet_2d_bn_roi_u3_c3'
+#cfg.EXP_DIR = 'uvnet/uvnet_2d_bn_roi_u2_c3'
+#snapshot_prefix = 'uvnet_2d_bn_roi_u2_c3'
+cfg.EXP_DIR = 'uvnet/uvnet_2d_bn_roi_u3_c3'
+snapshot_prefix = 'uvnet_2d_bn_roi_u3_c3'
 ###### ###### ###### ###### ###### ######
 ''' 
 Train
@@ -176,7 +176,7 @@ cfg.TRAIN.USE_PREFETCH = False
 cfg.TRAIN.DISPLAY_INTERVAL = 1000
 cfg.TRAIN.SOLVER = None
 cfg.TRAIN.PROTOTXT = osp.abspath(osp.join(cfg.MODELS_DIR, cfg.EXP_DIR, '{}'.format('train.prototxt')))
-cfg.TRAIN.PRETRAINED_MODEL = '{}'.format('/home/zlp/dev/medseg/output/uvnet/uvnet_2d_bn_roi_u2_c3/lits_Training_Batch_trainval_2D/uvnet_2d_bn_roi_u2_c3_iter_10.caffemodel')
+cfg.TRAIN.PRETRAINED_MODEL = '{}'.format('/home/zlp/dev/medseg/output/uvnet/uvnet_2d_bn_roi_u3_c3/lits_Training_Batch_trainval_2D/uvnet_2d_bn_roi_u3_c3_iter_10.caffemodel')
 cfg.TRAIN.IMDB_NAME = 'lits_Training_Batch_trainval_2D'
 cfg.TRAIN.NUM_PROCESS = 6 #the number of threads to do data augmentation
 ###### ###### ###### ###### ###### ######
@@ -184,7 +184,7 @@ cfg.TRAIN.NUM_PROCESS = 6 #the number of threads to do data augmentation
 '''
 SOLVER_PARAMETER = edict()
 SOLVER_PARAMETER.NET = cfg.TRAIN.PROTOTXT
-SOLVER_PARAMETER.BASE_LR = 0.01
+SOLVER_PARAMETER.BASE_LR = 0.001
 SOLVER_PARAMETER.MOMENTUM = 0.99
 SOLVER_PARAMETER.WEIGHT_DECAY = 0.0005
 SOLVER_PARAMETER.LR_POLICY = "step"

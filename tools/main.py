@@ -129,10 +129,14 @@ cfg.PID = os.getpid()
 # snapshot_prefix = 'uvnet_2d_bn_incept2_weigted_c3_1.1.10_refined'
 
 '''roi'''
-cfg.EXP_DIR = 'roinet/roinet_2d_bn_u2_c3'
-snapshot_prefix = 'roinet_2d_bn_u2_c3'
-# cfg.EXP_DIR = 'roinet/roinet_2d_bn_u3_c3'
-# snapshot_prefix = 'roinet_2d_bn_u3_c3'
+# cfg.EXP_DIR = 'roinet/roinet_2d_bn_u2_c3'
+# snapshot_prefix = 'roinet_2d_bn_u2_c3'
+cfg.EXP_DIR = 'roinet/roinet_2d_bn_u3_c3'
+snapshot_prefix = 'roinet_2d_bn_u3_c3'
+# cfg.EXP_DIR = 'roinet/roinet_2d_bn_d4_c3'
+# snapshot_prefix = 'roinet_2d_bn_d4_c3'
+# cfg.EXP_DIR = 'roinet/roinet_2d_bn_d4_weighted_c3'
+# snapshot_prefix = 'roinet_2d_bn_d4_weighted_c3'
 ###### ###### ###### ###### ###### ######
 ''' 
 Train
@@ -171,12 +175,13 @@ cfg.TRAIN.CLASS.SPLIT = (0.5, 1.5)
 cfg.TRAIN.IMS_PER_BATCH = 2
 cfg.TRAIN.BATCH_SIZE = 2
 cfg.TRAIN.SNAPSHOT_ITERS = 10000
-cfg.TRAIN.MAX_ITER = 180000
+cfg.TRAIN.MAX_ITER = 240000
 cfg.TRAIN.USE_PREFETCH = False
-cfg.TRAIN.DISPLAY_INTERVAL = 100
+cfg.TRAIN.DISPLAY_INTERVAL = 1000
 cfg.TRAIN.SOLVER = None
 cfg.TRAIN.PROTOTXT = osp.abspath(osp.join(cfg.MODELS_DIR, cfg.EXP_DIR, '{}'.format('train.prototxt')))
-cfg.TRAIN.PRETRAINED_MODEL = '{}'.format('/home/zlp/dev/medseg/output/roinet/roinet_2d_bn_u2_c3/lits_Training_Batch_trainval_2D/roinet_2d_bn_u2_c3_iter_10.caffemodel')
+cfg.TRAIN.PRETRAINED_MODEL = '{}'.format('/home/zlp/dev/medseg/output/roinet/roinet_2d_bn_u3_c3/lits_Training_Batch_trainval_2D/roinet_2d_bn_u3_c3_iter_10.caffemodel')
+# cfg.TRAIN.PRETRAINED_MODEL = '{}'.format('/home/zlp/dev/medseg/output/uvnet/uvnet_2d_bn_incept2_weigted_c3/lits_Training_Batch_trainval_2D/uvnet_2d_bn_incept2_weigted_c3_1.1.10_iter_260000.caffemodel')
 cfg.TRAIN.IMDB_NAME = 'lits_Training_Batch_trainval_2D'
 cfg.TRAIN.NUM_PROCESS = 6 #the number of threads to do data augmentation
 ###### ###### ###### ###### ###### ######
@@ -184,11 +189,11 @@ cfg.TRAIN.NUM_PROCESS = 6 #the number of threads to do data augmentation
 '''
 SOLVER_PARAMETER = edict()
 SOLVER_PARAMETER.NET = cfg.TRAIN.PROTOTXT
-SOLVER_PARAMETER.BASE_LR = 0.001
+SOLVER_PARAMETER.BASE_LR = 0.01
 SOLVER_PARAMETER.MOMENTUM = 0.99
 SOLVER_PARAMETER.WEIGHT_DECAY = 0.0005
 SOLVER_PARAMETER.LR_POLICY = "step"
-SOLVER_PARAMETER.STEPSIZE = 60000
+SOLVER_PARAMETER.STEPSIZE = 80000
 SOLVER_PARAMETER.GAMMA = 0.1
 SOLVER_PARAMETER.DISPLAY_INTERVAL = cfg.TRAIN.DISPLAY_INTERVAL
 SOLVER_PARAMETER.SNAPSHOT = 0  #We disable standard caffe solver snapshotting and implement our own snapshot
@@ -239,8 +244,8 @@ cfg.EVAL.NUM_PROCESS = 12 #the number of threads to do data augmentation
 
 if __name__ == '__main__':
 	
-	# sys.argv.extend(['train', '--gpu=0'])
-	# sys.argv.extend(['test', '--gpu=0'])
+	# sys.argv.extend(['train', '--gpu=1'])
+	# sys.argv.extend(['test', '--gpu=1'])
 	# sys.argv.extend(['eval', '--gpu=0'])
 	args = parse_args()
 	print('Called with args:')

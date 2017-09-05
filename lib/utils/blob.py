@@ -71,6 +71,8 @@ def _im_list_to_blob(ims, Dtype=np.float32):
     blob = np.zeros((num_images, max_shape[0], max_shape[1], max_shape[2]), dtype=Dtype)
     for i in xrange(num_images):
         im = ims[i].astype(dtype=Dtype, copy=False)
+        # print np.sum(ims[i] == 0), np.sum(ims[i] == 1), np.sum(ims[i] == 2), np.sum((ims[i] > 0)&(ims[i] < 1)), np.sum((ims[i] > 1)&(ims[i] < 2))
+        # print np.sum(im == 0), np.sum(im == 1), np.sum(im == 2), np.sum((im > 0)&(im < 1)), np.sum((im > 1)&(im < 2))
         blob[i, 0:im.shape[0], 0:im.shape[1], 0:im.shape[2]] = im
     return blob
 
@@ -458,6 +460,15 @@ def prepare_data_unit(im_path, gt_path, pixel_statistics,
     else:
         im = scale_image(im, target_size=target_size, max_size=max_size, im_type=im_type)
         gt = scale_image(gt, target_size=target_size, max_size=max_size, im_type=im_type)
+
+    ### take class label after resize
+    if class_params.NUMBER == 2:
+        gt[gt<class_params.SPLIT[0]] = 0.0
+        gt[gt>=class_params.SPLIT[0]] = 1.0
+    else:
+        gt[gt<class_params.SPLIT[0]] = 0.0
+        gt[(gt>=class_params.SPLIT[0])&(gt<class_params.SPLIT[1])] = 1.0
+        gt[gt>=class_params.SPLIT[1]] = 2.0
     """ Random Crop patch from image
     """
     cropped_patches = random_crop_patches([im, gt], cropped_size, patch_per_image)

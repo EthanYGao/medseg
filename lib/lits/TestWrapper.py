@@ -103,8 +103,8 @@ class InferenceWrapper(object):
             """
             im_path = self.imdb[ind_data]['image']
             gt_path = self.imdb[ind_data]['gt']
-            # im_path = '/home/zlp/dev/medseg/data/lits/Training_Batch/Images/volume-0/volume-0_slice_58.npy'
-            # gt_path = '/home/zlp/dev/medseg/data/lits/Training_Batch/Segmentation/segmentation-0/segmentation-0_slice_58.npy'
+            im_path = '/home/zlp/dev/medseg/data/lits/Training_Batch/Images/volume-0/volume-0_slice_58.npy'
+            gt_path = '/home/zlp/dev/medseg/data/lits/Training_Batch/Segmentation/segmentation-0/segmentation-0_slice_58.npy'
             # im_path = '/home/zlp/dev/medseg/data/lits/Training_Batch/Images/volume-100/volume-100_slice_550.npy'
             # gt_path = '/home/zlp/dev/medseg/data/lits/Training_Batch/Segmentation/segmentation-100/segmentation-100_slice_550.npy'
             # im_path = '/home/zlp/dev/medseg/data/lits/Training_Batch/volume-0.nii'
@@ -129,7 +129,7 @@ class InferenceWrapper(object):
         mask = blobs_out['roi_mask'][0]
         if self.params.DEBUG:
             fig, axes = plt.subplots(1, 3)
-            vis_seg(axes, [image[:,:,image.shape[2]/2], np.argmax(prob, axis=0), mask[0,:,:]])
+            vis_seg(axes, [image[:,:,image.shape[2]/2], mask[0,:,:], np.argmax(prob, axis=0)])
             exit()
         return prob
 

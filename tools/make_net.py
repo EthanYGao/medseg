@@ -21,14 +21,14 @@ __nets = ['deeplab_largefov', 'deeplab_largefov_bn', 'deeplab_v2_vgg_16', 'deepl
 		'densenet_unet', 'densenet_unet_8s',
 		'uvnet_2d_bn', 'uvnet_2d_bn_weigted', 'uvnet_2d_bn_original_weigted',
 		'uvnet_2d_bn_modified_weigted', 'uvnet_2d_bn_incept_weigted', 'uvnet_2d_bn_incept2_weigted',
-		'roinet_2d_bn_u2', 'roinet_2d_bn_u3', 'roinet_2d_bn_d4', 'roinet_2d_bn_d4_weighted']
+		'roinet_2d_bn_u2', 'roinet_2d_bn_u3', 'roinet_2d_bn_u3_weighted', 'roinet_2d_bn_d3', 'roinet_2d_bn_d3_weighted','roinet_2d_bn_d4', 'roinet_2d_bn_d4_weighted']
 ### setting ###
 # dim_data = [5,1,156,156,8]
 # dim_label = [5,1,156,156,8]
 dim_data = [2,5,416,416]
 dim_label = [2,1,416,416]
 num_class = 3
-net = 'roinet_2d_bn_u2'
+net = 'roinet_2d_bn_d4_weighted'
 
 backbone = net.split('_')[0]
 assert backbone in __backbones, 'Unknown backbone: {}'.format(backbone)
@@ -63,5 +63,5 @@ if net in ['uvnet_2d_bn', 'uvnet_2d_bn_weigted','uvnet_2d_bn_original_weigted',
 'uvnet_2d_bn_modified_weigted', 'uvnet_2d_bn_incept_weigted', 'uvnet_2d_bn_incept2_weigted']:
 	make_uvnet(net, dim_data, dim_label, num_class, prototxt_train, prototxt_test)
 
-if net in ['roinet_2d_bn_u2', 'roinet_2d_bn_u3', 'roinet_2d_bn_d4', 'roinet_2d_bn_d4_weighted']:
+if net in ['roinet_2d_bn_u2', 'roinet_2d_bn_u3', 'roinet_2d_bn_u3_weighted', 'roinet_2d_bn_d3', 'roinet_2d_bn_d3_weighted','roinet_2d_bn_d4', 'roinet_2d_bn_d4_weighted']:
 	make_roinet(net, dim_data, dim_label, num_class, prototxt_train, prototxt_test)

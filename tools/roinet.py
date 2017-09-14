@@ -301,8 +301,8 @@ def roinet_2d_bn_u2(dim_data, dim_label, num_class, phase='train'):
 			loss_param=dict(ignore_label=ignore_label), propagate_down=[1,0])
 	else:
 		# net.prob = L.Softmax(net.score, axis=1)
-		net.roi_score_reconstruction = L.ROIPatchReconstruction(net.score, net.roi_coordinate, height=dim_data[2], width=dim_data[2])
-		net.prob = L.Softmax(net.roi_score_reconstruction, axis=1)
+		net.softmax_score = L.Softmax(net.score, axis=1)
+		net.prob = L.ROIPatchReconstruction(net.softmax_score, net.roi_coordinate, height=dim_data[2], width=dim_data[2])
 	return net.to_proto()
 
 def roinet_2d_bn_u3(dim_data, dim_label, num_class, phase='train'):
@@ -462,8 +462,8 @@ def roinet_2d_bn_u3(dim_data, dim_label, num_class, phase='train'):
 			loss_param=dict(ignore_label=ignore_label), propagate_down=[1,0])
 	else:
 		# net.prob = L.Softmax(net.score, axis=1)
-		net.roi_score_reconstruction = L.ROIPatchReconstruction(net.score, net.roi_coordinate, height=dim_data[2], width=dim_data[2])
-		net.prob = L.Softmax(net.roi_score_reconstruction, axis=1)
+		net.softmax_score = L.Softmax(net.score, axis=1)
+		net.prob = L.ROIPatchReconstruction(net.softmax_score, net.roi_coordinate, height=dim_data[2], width=dim_data[2])
 	return net.to_proto()
 
 def roinet_2d_bn_u3_weighted(dim_data, dim_label, num_class, phase='train'):
@@ -624,8 +624,8 @@ def roinet_2d_bn_u3_weighted(dim_data, dim_label, num_class, phase='train'):
 			loss_param=dict(ignore_label=ignore_label), propagate_down=[1,0,0])
 	else:
 		# net.prob = L.Softmax(net.score, axis=1)
-		net.roi_score_reconstruction = L.ROIPatchReconstruction(net.score, net.roi_coordinate, height=dim_data[2], width=dim_data[2])
-		net.prob = L.Softmax(net.roi_score_reconstruction, axis=1)
+		net.softmax_score = L.Softmax(net.score, axis=1)
+		net.prob = L.ROIPatchReconstruction(net.softmax_score, net.roi_coordinate, height=dim_data[2], width=dim_data[2])
 	return net.to_proto()
 
 def roinet_2d_bn_d3(dim_data, dim_label, num_class, phase='train'):
@@ -783,8 +783,8 @@ def roinet_2d_bn_d3(dim_data, dim_label, num_class, phase='train'):
 			loss_weight=1,
 			loss_param=dict(ignore_label=ignore_label), propagate_down=[1,0])
 	else:
-		net.roi_score_reconstruction = L.ROIPatchReconstruction(net.score, net.roi_coordinate, height=dim_data[2], width=dim_data[2])
-		net.prob = L.Softmax(net.roi_score_reconstruction, axis=1)
+		net.softmax_score = L.Softmax(net.score, axis=1)
+		net.prob = L.ROIPatchReconstruction(net.softmax_score, net.roi_coordinate, height=dim_data[2], width=dim_data[2])
 		# net.probtmp = L.Softmax(net.score, axis=1)
 		# net.prob = L.ROIPatchReconstruction(net.probtmp, net.roi_coordinate, height=dim_data[2], width=dim_data[2])
 	return net.to_proto()
@@ -877,11 +877,11 @@ def roinet_2d_bn_d3_weighted(dim_data, dim_label, num_class, phase='train'):
 	############ roi warping ############
 	net.roi_warping_d3e_relu = L.ROIWarping(net.d3e_relu, net.roi_coordinate, pooled_h=dim_data[2]/4, pooled_w=dim_data[2]/4, spatial_scale=0.125, propagate_down=[0,0])
 	net.roi_warping_d2e_relu = L.ROIWarping(net.d2e_relu, net.roi_coordinate, pooled_h=dim_data[2]/4, pooled_w=dim_data[2]/4, spatial_scale=0.25, propagate_down=[0,0])
-	net.roi_warping_concat = L.Concat(net.roi_warping_d3e_relu, net.roi_warping_d2e_relu, axis=1)
-	net.u2c_conv_roi, net.u2c_bn_roi, net.u2c_scale_roi, net.u2c_relu_roi = conv_bn_relu(net.roi_warping_concat, 256, pad=1, kernel_size=3, stride=1, update_param=False)
-	net.u2d_conv_roi, net.u2d_bn_roi, net.u2d_scale_roi, net.u2d_relu_roi = conv_bn_relu(net.u2c_relu_roi, 256, pad=1, kernel_size=3, stride=1, update_param=False)
-	net.u2e_conv_roi, net.u2e_bn_roi, net.u2e_scale_roi = conv_bn(net.u2d_relu_roi, 256, pad=1, kernel_size=3, stride=1, update_param=False)
-	net.u2f_conv_roi, net.u2f_bn_roi, net.u2f_scale_roi, net.u2f_eltw_roi, net.u2f_relu_roi = add_layer(net.roi_warping_concat, net.u2e_conv_roi, 256, update_param=False)
+	net.roi_warping_concat = L.Concat(net.roi_warping_d3e_relu, net.roi_warping_d2e_relu, axis=1, propagate_down=[0,0])
+	net.u2c_conv_roi, net.u2c_bn_roi, net.u2c_scale_roi, net.u2c_relu_roi = conv_bn_relu(net.roi_warping_concat, 256, pad=1, kernel_size=3, stride=1)
+	net.u2d_conv_roi, net.u2d_bn_roi, net.u2d_scale_roi, net.u2d_relu_roi = conv_bn_relu(net.u2c_relu_roi, 256, pad=1, kernel_size=3, stride=1)
+	net.u2e_conv_roi, net.u2e_bn_roi, net.u2e_scale_roi = conv_bn(net.u2d_relu_roi, 256, pad=1, kernel_size=3, stride=1)
+	net.u2f_conv_roi, net.u2f_bn_roi, net.u2f_scale_roi, net.u2f_eltw_roi, net.u2f_relu_roi = add_layer(net.roi_warping_concat, net.u2e_conv_roi, 256)
 	
 	### loss 2
 	net.score2 = L.Convolution(net.u2f_relu_roi,
@@ -944,8 +944,8 @@ def roinet_2d_bn_d3_weighted(dim_data, dim_label, num_class, phase='train'):
 			loss_weight=1,
 			loss_param=dict(ignore_label=ignore_label), propagate_down=[1,0,0])
 	else:
-		net.roi_score_reconstruction = L.ROIPatchReconstruction(net.score, net.roi_coordinate, height=dim_data[2], width=dim_data[2])
-		net.prob = L.Softmax(net.roi_score_reconstruction, axis=1)
+		net.softmax_score = L.Softmax(net.score, axis=1)
+		net.prob = L.ROIPatchReconstruction(net.softmax_score, net.roi_coordinate, height=dim_data[2], width=dim_data[2])
 		# net.probtmp = L.Softmax(net.score, axis=1)
 		# net.prob = L.ROIPatchReconstruction(net.probtmp, net.roi_coordinate, height=dim_data[2], width=dim_data[2])
 	return net.to_proto()
@@ -1114,8 +1114,8 @@ def roinet_2d_bn_d4(dim_data, dim_label, num_class, phase='train'):
 			loss_param=dict(ignore_label=ignore_label), propagate_down=[1,0])
 	else:
 		# net.prob = L.Softmax(net.score, axis=1)
-		net.roi_score_reconstruction = L.ROIPatchReconstruction(net.score, net.roi_coordinate, height=dim_data[2], width=dim_data[2])
-		net.prob = L.Softmax(net.roi_score_reconstruction, axis=1)
+		net.softmax_score = L.Softmax(net.score, axis=1)
+		net.prob = L.ROIPatchReconstruction(net.softmax_score, net.roi_coordinate, height=dim_data[2], width=dim_data[2])
 	return net.to_proto()
 
 def roinet_2d_bn_d4_weighted(dim_data, dim_label, num_class, phase='train'):
@@ -1282,8 +1282,8 @@ def roinet_2d_bn_d4_weighted(dim_data, dim_label, num_class, phase='train'):
 			loss_weight=1,
 			loss_param=dict(ignore_label=ignore_label), propagate_down=[1,0,0])
 	else:
-		net.roi_score_reconstruction = L.ROIPatchReconstruction(net.score, net.roi_coordinate, height=dim_data[2], width=dim_data[2])
-		net.prob = L.Softmax(net.roi_score_reconstruction, axis=1)
+		net.softmax_score = L.Softmax(net.score, axis=1)
+		net.prob = L.ROIPatchReconstruction(net.softmax_score, net.roi_coordinate, height=dim_data[2], width=dim_data[2])
 		# net.probtmp = L.Softmax(net.score, axis=1)
 		# net.prob = L.ROIPatchReconstruction(net.probtmp, net.roi_coordinate, height=dim_data[2], width=dim_data[2])
 	return net.to_proto()
@@ -1313,6 +1313,7 @@ def make_roinet(net, dim_data, dim_label, num_class, prototxt_train, prototxt_te
 		use_global_stats = 0
 		train_net = roinet_2d_bn_u3_weighted(dim_data, dim_label, num_class, phase='train')
 		use_global_stats = 1
+		dim_data[0] = 1
 		test_net = roinet_2d_bn_u3_weighted(dim_data, dim_label, num_class, phase='test')
 
 	if net == 'roinet_2d_bn_d3':

@@ -128,8 +128,8 @@ class InferenceWrapper(object):
         prob = blobs_out['prob'][0]
         mask = blobs_out['roi_mask'][0]
         if self.params.DEBUG:
-            fig, axes = plt.subplots(1, 3)
-            vis_seg(axes, [image[:,:,image.shape[2]/2], mask[0,:,:], np.argmax(prob, axis=0)])
+            fig, axes = plt.subplots(1, 6)
+            vis_seg(axes, [image[:,:,image.shape[2]/2], mask[0,:,:], np.argmax(prob, axis=0), prob[0,:,:], prob[1,:,:], prob[2,:,:]])
             exit()
         return prob
 

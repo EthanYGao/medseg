@@ -10,9 +10,10 @@ from vnet import make_vnet
 from densenet import make_densenet
 from uvnet import make_uvnet
 from roinet import make_roinet
+from uvinet import make_uvinet
 
 # register net
-__backbones = ['deeplab', 'fcn', 'unet','resnet', 'vnet', 'densenet', 'uvnet', 'roinet']
+__backbones = ['deeplab', 'fcn', 'unet','resnet', 'vnet', 'densenet', 'uvnet', 'roinet', 'uvinet']
 __nets = ['deeplab_largefov', 'deeplab_largefov_bn', 'deeplab_v2_vgg_16', 'deeplab_v2_vgg_16_bn', 'deeplab_v2_vgg_16_unet',
 		'fcn_32s', 'fcn_16s', 'fcn_8s',
 		'unet_2d', 'unet_2d_bn', 'unet_3d', 'unet_3d_bn', 'unet_rcu_2d', 'unet_2d_bn_8s', 'unet_rcu_2d_bn', 'unet_2d_bn_mask', 'unet_2d_bn_weigted',
@@ -21,14 +22,15 @@ __nets = ['deeplab_largefov', 'deeplab_largefov_bn', 'deeplab_v2_vgg_16', 'deepl
 		'densenet_unet', 'densenet_unet_8s',
 		'uvnet_2d_bn', 'uvnet_2d_bn_weigted', 'uvnet_2d_bn_original_weigted',
 		'uvnet_2d_bn_modified_weigted', 'uvnet_2d_bn_incept_weigted', 'uvnet_2d_bn_incept2_weigted',
-		'roinet_2d_bn_u2', 'roinet_2d_bn_u3', 'roinet_2d_bn_u3_weighted', 'roinet_2d_bn_d3', 'roinet_2d_bn_d3_weighted','roinet_2d_bn_d4', 'roinet_2d_bn_d4_weighted']
+		'roinet_2d_bn_u2', 'roinet_2d_bn_u3', 'roinet_2d_bn_u3_weighted', 'roinet_2d_bn_d3', 'roinet_2d_bn_d3_weighted','roinet_2d_bn_d4', 'roinet_2d_bn_d4_weighted',
+		'uvinet_2d_bn_weighted']
 ### setting ###
 # dim_data = [5,1,156,156,8]
 # dim_label = [5,1,156,156,8]
-dim_data = [2,5,416,416]
-dim_label = [2,1,416,416]
+dim_data = [2,5,384,384]
+dim_label = [2,1,384,384]
 num_class = 3
-net = 'roinet_2d_bn_d4_weighted'
+net = 'uvinet_2d_bn_weighted'
 
 backbone = net.split('_')[0]
 assert backbone in __backbones, 'Unknown backbone: {}'.format(backbone)
@@ -65,3 +67,6 @@ if net in ['uvnet_2d_bn', 'uvnet_2d_bn_weigted','uvnet_2d_bn_original_weigted',
 
 if net in ['roinet_2d_bn_u2', 'roinet_2d_bn_u3', 'roinet_2d_bn_u3_weighted', 'roinet_2d_bn_d3', 'roinet_2d_bn_d3_weighted','roinet_2d_bn_d4', 'roinet_2d_bn_d4_weighted']:
 	make_roinet(net, dim_data, dim_label, num_class, prototxt_train, prototxt_test)
+
+if net in ['uvinet_2d_bn_weighted']:
+	make_uvinet(net, dim_data, dim_label, num_class, prototxt_train, prototxt_test)
